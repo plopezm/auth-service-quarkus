@@ -15,7 +15,6 @@ import javax.ws.rs.core.MediaType;
 import com.aeox.auth.dto.login.LoginRequest;
 import com.aeox.auth.dto.login.LoginResponse;
 import com.aeox.auth.dto.signup.SignupRequest;
-import com.aeox.auth.entity.User;
 import com.aeox.auth.service.LoginService;
 
 @Path("/api/v1/auth")

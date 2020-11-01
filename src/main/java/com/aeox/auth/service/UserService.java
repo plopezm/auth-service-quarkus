@@ -9,7 +9,6 @@ import javax.transaction.Transactional;
 
 import com.aeox.auth.entity.User;
 import com.aeox.auth.exception.EntityNotFoundException;
-import com.aeox.auth.exception.LoginInvalidException;
 import com.aeox.auth.repository.UserRepository;
 
 @ApplicationScoped
