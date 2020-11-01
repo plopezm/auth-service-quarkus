@@ -21,7 +21,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
             email = "pabloplm@gmail.com"),
         license = @License(
             name = "MIT",
-            url = "https://opensource.org/licenses/MIT")),
+            url = "https://github.com/plopezm/auth-service-quarkus/blob/master/LICENSE")),
     components = @Components(
         securitySchemes = {
             @SecurityScheme(
