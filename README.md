@@ -28,3 +28,14 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./target/auth-service-1.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
+
+## Creating .exe in windows:
+
+https://quarkus.io/guides/building-native-image
+
+1. Download: https://aka.ms/vs/15/release/vs_buildtools.exe
+2. Install: windows build tools
+3. Execute:
+```
+cmd /c 'call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat" && mvn package -Pnative'
+```
