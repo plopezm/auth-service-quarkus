@@ -5,6 +5,7 @@ import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import javax.crypto.SecretKeyFactory;
@@ -12,6 +13,7 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -21,19 +23,38 @@ import javax.validation.constraints.NotBlank;
 public class User extends AbstractEntity {
     @NotBlank
     @Column(unique = true)
-    public String username;
+    private String username;
+
     @NotBlank
-    public String password;
+    private String password;
+
     @JsonbTransient
     private byte[] salt;
-    public String fullName;
+
+    @NotBlank
+    private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<Scope> scopes;
+
+    public User() {}
+
+    public User(
+        @NotBlank final String username, 
+        @NotBlank final String password, 
+        @NotBlank final String email
+    ) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+    }
 
     @JsonbTransient
     public String getPassword() {
         return password;
     }
-    
-    public void setPassword(String password) {
+
+    public void setPassword(final String password) {
         this.password = password;
     }
 
@@ -41,10 +62,38 @@ public class User extends AbstractEntity {
         return salt;
     }
 
-    @PrePersist
-    public void onUserPersist() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        this.generateSalt();
-        this.password = hashPasswordUsingSalt(this.password, this.salt);
+    public void setSalt(final byte[] salt) {
+        this.salt = salt;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(final String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(final String email) {
+        this.email = email;
+    }
+
+    public List<Scope> getScopes() {
+        return scopes;
+    }
+
+    public void setScopes(final List<Scope> scopes) {
+        this.scopes = scopes;
+    }
+
+    private void generateSalt() {
+        final SecureRandom random = new SecureRandom();
+        this.salt = new byte[16];
+        random.nextBytes(this.salt);
     }
 
     public static String hashPasswordUsingSalt(final String password, final byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -52,11 +101,11 @@ public class User extends AbstractEntity {
         final SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
         return Base64.getEncoder().encodeToString(factory.generateSecret(spec).getEncoded());
     }
-
-    private void generateSalt() {
-        SecureRandom random = new SecureRandom();
-        this.salt = new byte[16];
-        random.nextBytes(this.salt);
+    
+    @PrePersist
+    public void onUserPersist() throws NoSuchAlgorithmException, InvalidKeySpecException {
+        this.generateSalt();
+        this.password = hashPasswordUsingSalt(this.password, this.salt);
     }
 
     public static Optional<User> findByUsername(final String username) {
@@ -68,5 +117,4 @@ public class User extends AbstractEntity {
         final User result = find("username = ?1 and password = ?2", username, password).firstResult();
         return Optional.ofNullable(result);
     }
-
 }

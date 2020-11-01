@@ -21,16 +21,12 @@ public class UserService {
     }
 
     public User getById(final UUID id) {
-        return this.userRepository.findByIdOptional(id).orElseThrow(EntityNotFoundException::new);
+        return this.userRepository.findByIdOptional(id).orElseThrow(() -> new EntityNotFoundException(User.class));
     }
 
-    public User getByUsernameAndPassword(final String username, final String password)
+    public User getByUsername(final String username)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        final User user = this.userRepository.findByUsername(username).orElseThrow(LoginInvalidException::new);
-        if (!user.getPassword().equals(User.hashPasswordUsingSalt(password, user.getSalt()))) {
-            throw new LoginInvalidException();
-        }
-        return user;
+       return this.userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException(User.class));
     }
 
     @Transactional

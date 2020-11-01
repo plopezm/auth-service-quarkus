@@ -2,12 +2,17 @@ package com.aeox.auth.service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
-import com.aeox.auth.dto.LoginRequest;
-import com.aeox.auth.dto.LoginResponse;
+import com.aeox.auth.dto.login.LoginRequest;
+import com.aeox.auth.dto.login.LoginResponse;
+import com.aeox.auth.dto.signup.SignupRequest;
+import com.aeox.auth.entity.Scope;
 import com.aeox.auth.entity.User;
+import com.aeox.auth.exception.EntityNotFoundException;
+import com.aeox.auth.exception.LoginInvalidException;
 
 import org.eclipse.microprofile.jwt.Claims;
 
@@ -23,12 +28,24 @@ public class LoginService {
 
     public LoginResponse login(final LoginRequest loginRequest)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
-        final User user = this.userService.getByUsernameAndPassword(loginRequest.username, loginRequest.password);
+        User user = null;
+        try{
+            user = this.userService.getByUsername(loginRequest.username);
+        } catch (EntityNotFoundException e) {
+            throw new LoginInvalidException(e);
+        }
+        if (!user.getPassword().equals(User.hashPasswordUsingSalt(loginRequest.password, user.getSalt()))) {
+            throw new LoginInvalidException();
+        }
         return new LoginResponse(this.generateToken(user));
     }
     
-    public LoginResponse signup(final User user) {
-        final User userRegistered = this.userService.create(user);
+    public LoginResponse signup(final SignupRequest request) {
+        final User userRegistered = this.userService.create(request.getUserEntity());
+        if (request.hasScopes()) {
+            final List<Scope> scopes = request.getScopesEntity(userRegistered);
+            // TODO: check applications exist and save
+        }
         return new LoginResponse(this.generateToken(userRegistered));
     }
 
@@ -36,7 +53,7 @@ public class LoginService {
         return Jwt.issuer("https://auth-service.aeox.com") 
         .upn(user.getId().toString())
         //.groups(new HashSet()<>(Arrays.asList("User", "Admin"))) 
-        .claim(Claims.nickname.name(), user.username) 
+        .claim(Claims.nickname.name(), user.getUsername()) 
         .sign();
     }
 }

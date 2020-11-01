@@ -1,4 +1,4 @@
-package com.aeox.auth.dto;
+package com.aeox.auth.dto.login;
 
 public class LoginResponse {
     public String token;

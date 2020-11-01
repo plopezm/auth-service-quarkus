@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import javax.json.bind.annotation.JsonbDateFormat;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -16,10 +17,13 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 public class AbstractEntity extends PanacheEntityBase {
     @Id
     private UUID id;
+    
     @JsonbDateFormat("dd/MM/yyyy")
     private LocalDateTime createdAt;
+    
     @JsonbDateFormat("dd/MM/yyyy")
     private LocalDateTime updatedAt;
+
     @Version
     private long version;
 
@@ -27,13 +31,37 @@ public class AbstractEntity extends PanacheEntityBase {
         return id;
     }
 
+    @JsonbTransient
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
+    @JsonbTransient
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
-    }    
+    }
+
+    @JsonbTransient
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public long getVersion() {
+        return version;
+    }
+
+    @JsonbTransient
+    public void setVersion(long version) {
+        this.version = version;
+    }   
 
     @PrePersist
     public void onAbstractEntityPersist() {

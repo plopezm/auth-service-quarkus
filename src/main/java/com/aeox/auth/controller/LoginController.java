@@ -12,8 +12,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.aeox.auth.dto.LoginRequest;
-import com.aeox.auth.dto.LoginResponse;
+import com.aeox.auth.dto.login.LoginRequest;
+import com.aeox.auth.dto.login.LoginResponse;
+import com.aeox.auth.dto.signup.SignupRequest;
 import com.aeox.auth.entity.User;
 import com.aeox.auth.service.LoginService;
 
@@ -38,7 +39,7 @@ public class LoginController {
     @Path("/signup")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public LoginResponse signup(@Valid final User user) {
-        return this.loginService.signup(user);
+    public LoginResponse signup(@Valid final SignupRequest request) {
+        return this.loginService.signup(request);
     }
 }

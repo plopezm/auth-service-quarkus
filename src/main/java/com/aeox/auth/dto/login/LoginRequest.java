@@ -1,4 +1,4 @@
-package com.aeox.auth.dto;
+package com.aeox.auth.dto.login;
 
 import javax.validation.constraints.NotBlank;
 
