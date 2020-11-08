@@ -1,11 +1,19 @@
 package com.aeox.auth.entity;
 
+import java.util.Optional;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "roles")
+@Table(
+    name = "roles",    
+    indexes = {
+        @Index(name = "roles_name_index", columnList = "name", unique = true)
+    }
+)
 public class Role extends AbstractEntity {
     @Column(unique = true)
     private String name;
@@ -34,4 +42,9 @@ public class Role extends AbstractEntity {
     public void setDescription(final String description) {
         this.description = description;
     }
+
+	public static Optional<Role> findByName(String name) {
+		final Role result = find("name = ?1", name).firstResult();
+        return Optional.ofNullable(result);
+	}
 }

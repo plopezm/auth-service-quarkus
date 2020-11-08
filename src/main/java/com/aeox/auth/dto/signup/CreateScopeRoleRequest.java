@@ -2,7 +2,7 @@ package com.aeox.auth.dto.signup;
 
 import javax.validation.constraints.NotBlank;
 
-public class SignupScopeRoleRequest {
+public class CreateScopeRoleRequest {
     @NotBlank
     private String name;
     

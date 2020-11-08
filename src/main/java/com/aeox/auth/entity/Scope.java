@@ -8,12 +8,16 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "scopes")
+@Table(
+    name = "scopes",
+    uniqueConstraints = @UniqueConstraint(
+        columnNames = {"user_id", "application_id"}
+    )
+)
 public class Scope extends AbstractEntity {
-    private String name;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -32,19 +36,10 @@ public class Scope extends AbstractEntity {
 
     public Scope() {}
 
-    public Scope(final String name, final User user, final Application application, final List<Role> roles) {
-        this.name = name;
+    public Scope(final User user, final Application application, final List<Role> roles) {
         this.user = user;
         this.application = application;
         this.roles = roles;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     public User getUser() {

@@ -5,23 +5,12 @@ import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
-public class SignupScopeRequest {
-    @NotBlank
-    private String scopeName;
-
+public class CreateScopeRequest {
     @NotBlank
     private String applicationName;
 
     @NotEmpty
-    private List<SignupScopeRoleRequest> roles;
-
-    public String getScopeName() {
-        return scopeName;
-    }
-
-    public void setScopeName(String scopeName) {
-        this.scopeName = scopeName;
-    }
+    private List<String> roles;
 
     public String getApplicationName() {
         return applicationName;
@@ -31,11 +20,11 @@ public class SignupScopeRequest {
         this.applicationName = applicationName;
     }
 
-    public List<SignupScopeRoleRequest> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(final List<SignupScopeRoleRequest> roles) {
+    public void setRoles(final List<String> roles) {
         this.roles = roles;
     }
 

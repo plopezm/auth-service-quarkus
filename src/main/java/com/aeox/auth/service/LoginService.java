@@ -2,14 +2,12 @@ package com.aeox.auth.service;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
 
 import com.aeox.auth.dto.login.LoginRequest;
 import com.aeox.auth.dto.login.LoginResponse;
 import com.aeox.auth.dto.signup.SignupRequest;
-import com.aeox.auth.entity.Scope;
 import com.aeox.auth.entity.User;
 import com.aeox.auth.exception.EntityNotFoundException;
 import com.aeox.auth.exception.LoginInvalidException;
@@ -21,9 +19,11 @@ import io.smallrye.jwt.build.Jwt;
 @ApplicationScoped
 public class LoginService {
     private UserService userService;
+    private ScopeService scopeService;
 
-    public LoginService(final UserService userService) {
+    public LoginService(final UserService userService, final ScopeService scopeService) {
         this.userService = userService;
+        this.scopeService = scopeService;
     }
 
     public LoginResponse login(final LoginRequest loginRequest)
@@ -43,8 +43,9 @@ public class LoginService {
     public LoginResponse signup(final SignupRequest request) {
         final User userRegistered = this.userService.create(request.getUserEntity());
         if (request.hasScopes()) {
-            final List<Scope> scopes = request.getScopesEntity(userRegistered);
-            // TODO: check applications exist and save
+            request.getScopes().forEach(scopeRequest -> {
+                this.scopeService.create(userRegistered, scopeRequest);
+            });
         }
         return new LoginResponse(this.generateToken(userRegistered));
     }
@@ -53,7 +54,7 @@ public class LoginService {
         return Jwt.issuer("https://auth-service.aeox.com") 
         .upn(user.getId().toString())
         //.groups(new HashSet()<>(Arrays.asList("User", "Admin"))) 
-        .claim(Claims.nickname.name(), user.getUsername()) 
+        .claim(Claims.nickname.name(), user.getUsername())
         .sign();
     }
 }
