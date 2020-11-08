@@ -11,6 +11,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.transaction.Transactional;
 
+import com.aeox.auth.config.AuthServiceProperties;
 import com.aeox.auth.dto.login.LoginRequest;
 import com.aeox.auth.dto.login.LoginResponse;
 import com.aeox.auth.dto.signup.SignupRequest;
@@ -25,10 +26,12 @@ import io.smallrye.jwt.build.Jwt;
 
 @ApplicationScoped
 public class LoginService {
+    private AuthServiceProperties properties;
     private UserService userService;
     private ScopeService scopeService;
 
-    public LoginService(final UserService userService, final ScopeService scopeService) {
+    public LoginService(final AuthServiceProperties properties, final UserService userService, final ScopeService scopeService) {
+        this.properties = properties;
         this.userService = userService;
         this.scopeService = scopeService;
     }
@@ -69,7 +72,7 @@ public class LoginService {
             scopeBuilder.add("roles", rolesBuilder.build());
             scopesBuilder.add(scopeBuilder.build());
         });
-        return Jwt.issuer("https://auth-service.aeox.com")
+        return Jwt.issuer(this.properties.getIssuer())
         .upn(user.getId().toString())        
         .claim(Claims.nickname.name(), user.getUsername())
         .claim("scopes", scopesBuilder.build())

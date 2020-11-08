@@ -14,9 +14,12 @@ import com.aeox.auth.entity.User;
 import com.aeox.auth.service.UserService;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 import io.quarkus.security.Authenticated;
 
+
+@Tag(name = "User", description = "User features")
 @Authenticated
 @Path("/api/v1/users")
 @Produces(MediaType.APPLICATION_JSON)

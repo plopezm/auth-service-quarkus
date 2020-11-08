@@ -18,10 +18,8 @@ public class AbstractEntity extends PanacheEntityBase {
     @Id
     private UUID id;
     
-    @JsonbDateFormat("dd/MM/yyyy")
     private LocalDateTime createdAt;
     
-    @JsonbDateFormat("dd/MM/yyyy")
     private LocalDateTime updatedAt;
 
     @Version
@@ -36,6 +34,7 @@ public class AbstractEntity extends PanacheEntityBase {
         this.id = id;
     }
 
+    @JsonbDateFormat("dd/MM/yyyy HH:mm:SS")
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -45,6 +44,7 @@ public class AbstractEntity extends PanacheEntityBase {
         this.createdAt = createdAt;
     }
 
+    @JsonbDateFormat("dd/MM/yyyy HH:mm:SS")
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }

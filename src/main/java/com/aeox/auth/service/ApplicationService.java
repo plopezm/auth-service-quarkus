@@ -1,6 +1,7 @@
 package com.aeox.auth.service;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.transaction.Transactional;
 
 import com.aeox.auth.entity.Application;
 import com.aeox.auth.exception.EntityNotFoundException;
@@ -15,6 +16,7 @@ public class ApplicationService {
         this.applicationRepository = applicationRepository;
     }    
 
+    @Transactional
     public Application create(final Application application) {
         applicationRepository.persist(application);
         return application;
