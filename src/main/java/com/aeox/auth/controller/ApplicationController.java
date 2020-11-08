@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.aeox.auth.dto.application.CreateApplicationRequest;
 import com.aeox.auth.entity.Application;
 import com.aeox.auth.service.ApplicationService;
 
@@ -24,7 +25,7 @@ public class ApplicationController {
     }
 
     @POST
-    public Application create(@Valid final Application application) {
-        return this.applicationService.create(application);
+    public Application create(@Valid final CreateApplicationRequest req) {
+        return this.applicationService.create(req);
     }
 }
