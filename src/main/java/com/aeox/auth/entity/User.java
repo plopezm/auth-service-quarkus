@@ -18,6 +18,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
+import com.aeox.auth.config.security.SecurityUtils;
+
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity {
@@ -95,17 +97,11 @@ public class User extends AbstractEntity {
         this.salt = new byte[16];
         random.nextBytes(this.salt);
     }
-
-    public static String hashPasswordUsingSalt(final String password, final byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        final KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
-        final SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-        return Base64.getEncoder().encodeToString(factory.generateSecret(spec).getEncoded());
-    }
     
     @PrePersist
     public void onUserPersist() throws NoSuchAlgorithmException, InvalidKeySpecException {
         this.generateSalt();
-        this.password = hashPasswordUsingSalt(this.password, this.salt);
+        this.password = SecurityUtils.hashPasswordUsingSalt(this.password, this.salt);
     }
 
     public static Optional<User> findByUsername(final String username) {

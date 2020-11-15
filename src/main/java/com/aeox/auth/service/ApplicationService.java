@@ -27,7 +27,7 @@ public class ApplicationService {
         app.setDescription(req.description);
         app.setRoles(req.roles.stream().map((roleName) -> {
             return this.roleService.getByName(roleName);
-        }).collect(Collectors.toSet()));
+        }).collect(Collectors.toList()));
         applicationRepository.persist(app);
         return app;
     }

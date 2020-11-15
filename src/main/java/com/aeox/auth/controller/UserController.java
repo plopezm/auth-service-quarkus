@@ -29,7 +29,7 @@ public class UserController {
     private UserService userService;
     
     @Inject
-    private JsonWebToken jwt;
+    JsonWebToken jwt;
 
     public UserController(final UserService userService) {
         this.userService = userService;

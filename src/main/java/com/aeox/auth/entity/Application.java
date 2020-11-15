@@ -1,7 +1,7 @@
 package com.aeox.auth.entity;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Column;
@@ -31,7 +31,7 @@ public class Application extends AbstractEntity {
         joinColumns = @JoinColumn(name = "application_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private List<Role> appRoles;
 
     public Application() {}
 
@@ -55,12 +55,12 @@ public class Application extends AbstractEntity {
         this.description = description;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public List<Role> getRoles() {
+        return appRoles;
     }
 
-    public void setRoles(final Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(final List<Role> roles) {
+        this.appRoles = roles;
     }
 
     @JsonbTransient

@@ -12,6 +12,7 @@ import javax.json.JsonObjectBuilder;
 import javax.transaction.Transactional;
 
 import com.aeox.auth.config.AuthServiceProperties;
+import com.aeox.auth.config.security.SecurityUtils;
 import com.aeox.auth.dto.login.LoginRequest;
 import com.aeox.auth.dto.login.LoginResponse;
 import com.aeox.auth.dto.signup.SignupRequest;
@@ -44,7 +45,7 @@ public class LoginService {
         } catch (EntityNotFoundException e) {
             throw new LoginInvalidException(e);
         }
-        if (!user.getPassword().equals(User.hashPasswordUsingSalt(loginRequest.password, user.getSalt()))) {
+        if (!user.getPassword().equals(SecurityUtils.hashPasswordUsingSalt(loginRequest.password, user.getSalt()))) {
             throw new LoginInvalidException();
         }
         return new LoginResponse(this.generateToken(user, user.getScopes()));
