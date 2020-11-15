@@ -1,9 +1,14 @@
 package com.aeox.auth.dto.login;
 
-public class LoginResponse {
-    public String token;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public LoginResponse(String token) {
-        this.token = token;
-    }
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class LoginResponse {
+    private String token;
 }

@@ -8,6 +8,16 @@ import javax.validation.constraints.NotBlank;
 
 import com.aeox.auth.entity.User;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SignupRequest {
     @NotBlank
     private String username;
@@ -21,38 +31,7 @@ public class SignupRequest {
 
     private List<CreateScopeRequest> scopes;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<CreateScopeRequest> getScopes() {
-        return scopes;
-    }
-
-    public void setScopes(List<CreateScopeRequest> scopes) {
-        this.scopes = scopes;
-    }
-
+    @JsonbTransient
 	public boolean hasScopes() {
 		return this.scopes != null && this.scopes.size() > 0;
 	}

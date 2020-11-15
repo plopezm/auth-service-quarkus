@@ -16,6 +16,13 @@ import javax.validation.constraints.NotBlank;
 
 import com.aeox.auth.config.security.SecurityUtils;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User extends AbstractEntity {
@@ -34,8 +41,6 @@ public class User extends AbstractEntity {
 
     @OneToMany(mappedBy = "user")
     private List<Scope> scopes;
-
-    public User() {}
 
     public User(
         @NotBlank final String username, 

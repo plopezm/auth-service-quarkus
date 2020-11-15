@@ -41,11 +41,11 @@ public class LoginService {
             throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = null;
         try{
-            user = this.userService.getByUsername(loginRequest.username);
+            user = this.userService.getByUsername(loginRequest.getUsername());
         } catch (EntityNotFoundException e) {
             throw new LoginInvalidException(e);
         }
-        if (!user.getPassword().equals(SecurityUtils.hashPasswordUsingSalt(loginRequest.password, user.getSalt()))) {
+        if (!user.getPassword().equals(SecurityUtils.hashPasswordUsingSalt(loginRequest.getPassword(), user.getSalt()))) {
             throw new LoginInvalidException();
         }
         return new LoginResponse(this.generateToken(user, user.getScopes()));

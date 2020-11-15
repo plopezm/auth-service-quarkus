@@ -12,7 +12,13 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Version;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
+@Builder(builderMethodName = "entityBuilder")
+@AllArgsConstructor
+@NoArgsConstructor
 @MappedSuperclass
 public class AbstractEntity extends PanacheEntityBase {
     @Id

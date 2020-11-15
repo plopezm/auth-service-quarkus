@@ -2,9 +2,18 @@ package com.aeox.auth.dto.login;
 
 import javax.validation.constraints.NotBlank;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequest {
     @NotBlank
-    public String username;
+    private String username;
     @NotBlank
-    public String password;
+    private String password;
 }

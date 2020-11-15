@@ -1,4 +1,4 @@
-package com.aeox.auth.dto;
+package com.aeox.auth.dto.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrorMessage {
-    private String message;
+public class CreateRoleRequest {
+    private String name;
+    private String desc;
 }
